@@ -1,21 +1,22 @@
 export default class Validate{
-    static validate(step, form){
-        let formKeys = Object.getOwnPropertyNames(form);
-        let difference = Object.getOwnPropertyNames(step).filter(prop => !formKeys.includes(prop));
-        if(difference.length) throw new Error(`${difference[0]} property cannot be in this data!`);
-        
-        for(let key of formKeys){
-            if(Array.isArray(step[key])){
-                for(let prop of step[key]){
-                    Validate.validate(prop, form[key][0]);
-                }
-            } else if(typeof step[key] === 'object'){
-                Validate.validate(step[key], form[key]);
-            } else if(step.hasOwnProperty(key)){
-                if(typeof step[key] !== form[key].type) throw new Error(`${key} type is not valid!`);
-            } else if(!step.hasOwnProperty(key)){
-                if(!form[key].hasOwnProperty('optional') || !form[key].optional) throw new Error(`missing ${key} property!`);
-            }
-        }
+    static validate(step, form) {
+        let formKeyes = Object.keys(form).filter((property) => { return typeof form[property] === 'object';});
+        let stepKeyes = Object.keys(step);
+        for (const key of formKeyes)
+            if (!form[key].optional && stepKeyes.indexOf(key) == -1) throw new Error(`{${key}} is not found`);
+        for (const key of stepKeyes)
+            if (formKeyes.indexOf(key) == -1) throw new Error(`{${key}} is not recognized`);
+        stepKeyes.forEach((property) => {
+            let params = { ...form[property] }
+            if (typeof step[property] === form[property].type && typeof step[property] === 'object' && !Array.isArray(step[property]))
+                this.validate(step[property], form[property]);
+            else if (params.optional) {
+                if (step[property] && typeof step[property] !== form[property].type) 
+                    throw new Error(`-${property}- is optional field but type must be a -${form[property].type}-`);
+                } else {
+                    if (typeof step[property] !== form[property].type || (Array.isArray(step[property]) && form[property].type === 'object'))
+                        throw new Error(`-${property}- is required and must be a -${form[property].type}-`);
+            } 
+        });
     }
 }

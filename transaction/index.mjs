@@ -6,18 +6,24 @@ export default class Transaction{
         this.store = {};
         this.form = {
             index: {
-                type: 'number'
+                type: 'number',
+                optional: false
             },
             meta: {
+                optional: false,
+                type: 'object',
                 title: {
-                    type: 'string'
+                    type: 'string',
+                    optional: false
                 },
                 description: {
-                    type: 'string'
+                    type: 'string',
+                    optional: false
                 }
             },
             call: {
-                type: 'function'
+                type: 'function',
+                optional: false
             },
             restore: {
                 type: 'function',
@@ -28,9 +34,9 @@ export default class Transaction{
 
     async dispatch(scenario){
         this.isValidScenario(scenario);
-        scenario.sort((curr, next) => {return curr.index > next.index});
+        //scenario.sort((curr, next) => {return curr.index > next.index});
         console.log(scenario);
-        
+
 
     }
 
@@ -39,7 +45,6 @@ export default class Transaction{
             Validate.validate(step, this.form);
             let setOfIndexes = new Set(scenario.map(step => step.index).filter(i => i >= 0));
             if(setOfIndexes.size !== scenario.length) throw new Error(`index value must be positive and unique!`);
-            //if(step.index < 0) throw new Error(`index value must be positive!`);
         }
     }
 }

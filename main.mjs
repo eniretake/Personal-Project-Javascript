@@ -3,7 +3,7 @@ const scenario = [
     {
         index: 1,
         meta: {
-            title: 'Read popular customers 1',
+            title: 's', //['s'],
             description: 'This action is responsible for reading the most popular customers 1'
         },
         // callback for main execution
