@@ -1,4 +1,4 @@
-// case 0: scenario contains 3 steps. Transaction is successful.
+// case 5: error occurres because of the restore() method on the last index.
 import Transaction from './transaction/index.mjs'
 const scenario = [
     {
@@ -14,8 +14,8 @@ const scenario = [
     {
         index: 1,
         meta: {
-            title: '1st title',
-            description: '1st Description'
+            title: 'first title',
+            description: 'first Description'
         },
         call: async (store) => {
             store.first = '1';
@@ -30,6 +30,9 @@ const scenario = [
         call: async (store) => {
             store.third = '3';
         },
+        restore: async (store) => {
+            store.third = '2';
+        }
     }
 ];
 
@@ -41,9 +44,9 @@ const transaction = new Transaction();
         const store = transaction.store; // {} | null
         const logs = transaction.logs; // []
         console.log('================================= ');
-        console.log('LOGS :', logs);
+        console.log('LOGS:', logs);
         console.log('================================= ');
-        console.log('STORE :', store);
+        console.log('STORE:', store);
     } catch (err) {
         console.log(err);
     }

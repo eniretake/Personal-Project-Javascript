@@ -1,5 +1,6 @@
-// case 0: scenario contains 3 steps. Transaction is successful.
+// case 1: scenario contains 3 steps and error occurres on last step; restores successfully.
 import Transaction from './transaction/index.mjs'
+
 const scenario = [
     {
         index: 2,
@@ -8,8 +9,12 @@ const scenario = [
             description: '2nd description'
         },
         call: async (store) => {
-            store.second = '2';
+            store.name2 = 'carrefour';
+            return store;                
         },
+        restore: async () => {
+            console.log('restored?');
+        }
     },
     {
         index: 1,
@@ -18,8 +23,8 @@ const scenario = [
             description: '1st Description'
         },
         call: async (store) => {
-            store.first = '1';
-        },
+            store.name1 = 'goodwill';
+        }
     },
     {
         index: 3,
@@ -28,13 +33,12 @@ const scenario = [
             description: '3rd Description'
         },
         call: async (store) => {
-            store.third = '3';
-        },
+            throw new Error('Transaction Failed');  
+        }   
     }
 ];
 
 const transaction = new Transaction();
-
 (async() => {
     try {
         await transaction.dispatch(scenario);
