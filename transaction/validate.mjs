@@ -1,7 +1,7 @@
 export default class Validate{
     static validate(step, form) {
-        let stepItems = Object.keys(step);
-        let formItems = Object.keys(form).filter((property) => { return typeof form[property] === 'object';});
+        let stepItems = Object.getOwnPropertyNames(step);
+        let formItems = Object.getOwnPropertyNames(form).filter((property) => { return typeof form[property] === 'object';});
         for (let item of formItems)
             if (!form[item].optional && stepItems.indexOf(item) == -1) throw new Error(`-${item}- is required`);
         for (let item of stepItems)

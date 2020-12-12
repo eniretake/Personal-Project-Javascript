@@ -61,14 +61,15 @@ export default class Transaction{
     isValidScenario(scenario){
         if(!Array.isArray(scenario)) throw new Error(`input data must be an array!`);
         for(let step of scenario) {
+            if(typeof step !== 'object') throw new Error('property is not an object!')
             Validate.validate(step, this.form);
-            let setOfIndexes = new Set(scenario.map(step => step.index).filter(i => i >= 0));
+        }
+        let setOfIndexes = new Set(scenario.map(step => step.index).filter(i => i >= 0));
             if(setOfIndexes.size !== scenario.length) throw new Error(`-index- value must be POSITIVE and UNIQUE!`);
             scenario.sort((curr, next) => {return curr.index > next.index ? 1:-1});
             let last = scenario[scenario.length-1];
             if(last.index !== scenario.length) throw new Error(`-indexes- must be 1,2,3...`);
             if(last.hasOwnProperty('restore')) throw new Error(`-restore- method should not be in the last step!`);
-        }
     }
 
     async rollback(step){

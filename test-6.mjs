@@ -23,7 +23,7 @@ const scenario = [
             description: 'doesn\'t have restore'
         },
         call: async (store) => {
-            console.log(store.num);
+            //console.log(store.num);
             throw new Error('vnaxot aba');
         },
         silent: true
