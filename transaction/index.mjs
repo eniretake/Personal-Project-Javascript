@@ -5,24 +5,19 @@ export default class Transaction{
         this.store = {};
         this.form = {
             index: {
-                type: 'number',
-                optional: false
+                type: 'number'
             },
             meta: {
                 type: 'object',
-                optional: false,
                 title: {
-                    type: 'string',
-                    optional: false
+                    type: 'string'
                 },
                 description: {
-                    type: 'string',
-                    optional: false
+                    type: 'string'
                 }
             },
             call: {
-                type: 'function',
-                optional: false
+                type: 'function'
             },
             restore: {
                 type: 'function',
